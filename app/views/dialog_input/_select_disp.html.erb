@@ -1,0 +1,24 @@
+<input type='text' name='search_text' id='dialog_search_text' value='<%= @search_text %>' data-dpath='<%= @dpath %>' />
+<input type='submit' value='送信' id='dialog_search_submit' data-dpath='<%= @dpath %>'/>
+<% if  @selecteddata.size == 1000 then %>
+リスト内に表示出来ません。抽出してください。
+<% end %>
+<table id='select' >
+  <tr>
+    <% @fielddisps.each{|columname|  %>
+      <th>
+        <%= columname  %>
+      </th>
+    <% } %>
+  </tr>
+
+  <% @selecteddata.each{|data|  %>
+    <tr class='dialog_line' >
+    <% @fields.each{|colum| %>
+      <td class='dialog_itme' data-table='<%= @table %>' data-idfield='<%= @idfield %>' data-id='<%= data[@idfield] %>' data-group='<%= @group %>' data-dpath='<%= @dpath %>' >
+        <%= data[colum].to_s %>
+      </td>
+    <% } %>
+  </tr>
+  <% } %>
+</table>

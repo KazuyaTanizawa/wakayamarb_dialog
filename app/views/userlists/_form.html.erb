@@ -1,0 +1,38 @@
+<%= form_for(@userlist) do |f| %>
+  <% if @userlist.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@userlist.errors.count, "error") %> prohibited this userlist from being saved:</h2>
+
+      <ul>
+      <% @userlist.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :code %><br>
+    <%#= f.text_field :code %>
+    <%= f.text_field :code,  :size => 4  ,
+                     :class => "dialoginput dialoginput_g",
+                     "data-field" => "code",
+                     "data-group" => "1",
+                     "data-diid" => "11",
+                     "data-id" => "dialoginput_1",
+                     "data-dpath" => "../../"%>
+    <span id="dialoginput_1"
+          data-sql="select name,phone,code from users  "
+          data-sqlwhere=""
+          data-table="User"
+          data-idfield="code"
+          data-fields="name phone code"
+          data-fielddisps="name phone code"></span>
+    <a class="dialoginput_g" data-field="name" data-group="1"></a>
+    <button class="dialoginput dialoginput_g search_button" data-diid="11" data-field="" data-group="1" data-id="dialoginput_1" data-dpath = "../../" name="button" type="button">検索</button>
+
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

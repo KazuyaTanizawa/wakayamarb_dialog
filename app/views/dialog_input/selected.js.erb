@@ -1,0 +1,50 @@
+$('.dialoginput_g').each(function(){
+    if($(this).attr('data-group') == <%= @group %>){
+        <% if @fields.present? == false and @p_id.present? == true and @edialog != "false" then %>
+          $('#alarm_dialog').dialog('open');
+          $('#alarm_dialog').text("入力した値はみつかりません。");
+          if($(this).attr('data-diid') == <%= @diid %>){
+            $(this).focus();
+        }
+        <% end %>
+        <% @fieldNames.each{|name|%>
+        if($(this).attr('data-field') == "<%= name %>") {
+
+            $(this).css("color","");
+            $(this).text("<%= @fields[0][name] %>").change();
+            $(this).val("<%= @fields[0][name] %>").change();
+        }
+        <% } if @fields.present? %>
+
+        <% @fieldNames.each{|name|%>
+          <% if name != @idfield then %>
+            <% if @edialog == "false" then %>
+                if($(this).attr('data-field') == "<%= name %>") {
+                    $(this).css("color","red");
+                    $(this).text("入力した値はみつかりません")
+                    $(this).val("入力した値はみつかりません.")
+                }
+            <% else %>
+                if($(this).attr('data-field') == "<%= name %>") {
+
+                    $(this).css("color","");
+                    $(this).text("")
+                    $(this).val("")
+                }
+            <% end %>
+          <% end %>
+        <% } if @fields.blank?  %>
+
+
+    }
+    //if($(this).attr('data-diid') == <%#= @diid %>){
+    //    $(this).focus();
+    //}
+
+    //次のフォーカスに移動させる
+    //var elements = "input[type=text]";
+    //var index = $(elements).index(this);
+    //$(elements + ":gt(" + index + "):first").focus();
+    //alert(elements + ":gt(" + index + "):first")
+
+})

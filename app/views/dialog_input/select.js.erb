@@ -1,0 +1,5 @@
+$('#select_search').html();
+//$('#select_table').html("<%=  raw(@str) %>");
+$('#select_table').html("<%=  escape_javascript(render 'select_disp') %>");
+
+$('#dialog_search_text').focus();

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dialog</title>
+  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+  <%= csrf_meta_tags %>
+  <script type="text/javascript">
+      $(function() {
+          $('.dialoginput_g').dialoginput('');
+      });
+  </script>
+</head>
+<body>
+
+<%= yield %>
+
+<div id="selected_dialog">
+  <div id="select_search"></div>
+  <div id="select_table"></div>
+</div>
+<div id="alarm_dialog" >
+  <div id="alarm_text" ></div>
+</div>
+</body>
+</html>
