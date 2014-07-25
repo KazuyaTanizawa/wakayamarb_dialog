@@ -1,94 +1,68 @@
 /*
- ダイアログを出してデータを選択するシステム
- 　　　必要ライブラリ
+ 必要ライブラリ
  jQuery
  jQueryUI
 
-使い方
- 1./app/controllers/dialog_input_controller.rb をプロジェクトに追加: ajaxのサーバー側の処理をします
- 2./app/views/dialog_input/select.jx.erb,selected.js.erb をプロジェクトに追加: ajaxのサーバー側(javascriptの部分の実行)
- 3.レイアウトもしくはビューに以下を追加
-    //dialoginputを呼び出すようにする
-    <script xmlns="http://www.w3.org/1999/html">
-        $(function() {
-            $('dialoginput_g').dialoginput();
-        });
-    </script>
-
-    //dialoginputないで使うdiv をセット。
-    <div id="selected_dialog">
-        <div id="select_search"></div>
-        <div id="select_table"></div>
-    </div>
-    <div id="alarm_dialog" >
-        <div id="alarm_text" ></div>
-    </div>
- 4./app/assets/javascripts/dialog_input.jsをプロジェクトに追加　java scriptの処理　ダイアログ上でのjavascriptの処理をしています。
- 5./config/locales/routes.rbに以下を追加
- 　　　  get "dialog_input/select"
-        get "dialog_input/selected"
- 6.view内に設定ファイルの追加
-
- view内にセットする属性情報
- <input type=""
- class = "dialoginput dialoginput_g",//dialoginput:F3で検索ダイアログを表示する場合にセット
-                                        //dialoginput_g:検索結果に伴って、データをjavascript経由でデータをセットする必要が有る場合にセット
- data-field = "code", //このテキストボックスが対応しているフィールド名
- data-group = "1",//グループID 同じグループは同じ文字列にする必要がある。
- data-diid = "1",//ユニークな文字列にする必要がある。ダイアログから戻った時のフォーカスの位置をセットする時に使っています
- data-id   = "dialoginput_1">//検索に必要な情報が入っているid(#は入れません）
-
-
- <span id="dialoginput_1"
- data-sql="select code,name,furi,phone,tax_kbn,kei,sime,addr1 from tmas" //ダイアログに表示する為のsql(最後には";"をつけない)
-                                                                         //全て文字としてselectする必要がある。idなどは数値なので
-                                                                         //trim(to_char(id,'99999')) as idなどとする
- data-sqlwhere="code like '%@@%'" //検索条件を手動で入れる場合。@@は検索文字列に置き換えられます。
- data-table="Tmas" //sqlのfromで使っているモデルクラス名
- data-idfield="code" //プライマリーキー。複合キーの場合はdata-sqlでこのキーがプリマリーキーになるように抽出している必要がある
- data-fields="code name furi",//全てのフィールド名をスペースで区切って代入
- data-fielddisps="コード 名称 フリガナ", //data-fieldsに対応する日本語文字列をスペース区切りで入力
- ></div>
-
-
-        他の入力データを参照する場合　以下のように@@囲む。内部的にはdata-diidの中で@@で囲まれた文字列を探しに行って、その値をセットするようにしています。
-        "data-sql" => "select ecode,name from tmei where tcode = '@200@'"
- 　
- view内にセットする属性情報(ダイアログで選択した結果を反映させるだけの場合)
- <input
- class = "dialoginput_g",//dialoginput_g:検索結果に伴って、データをjavascript経由でデータをセットする必要が有る場合にセット
- data-field = "name", //このテキストボックスが対応しているフィールド名
- data-group = "1",   //グループID 同じグループは同じ文字列にする必要がある。
- "readonly" = "readonly"
-
- 例：
-     <%= text_field_tag( 'post[title]',"",
-     {:class => "dialoginput dialoginput_g",
-     "data-field" => "ecode",
-     "data-group" => "3",
-     "data-diid" => "3",
-     "data-id" => "dialoginput_3"
-
-     }) %>
-     <span id="dialoginput_3"
-     data-sql="select ecode,name from tmei where tcode = '@200@'"
-     data-sqlwhere=""
-     data-table="Tmei"
-     data-idfield="ecode"
-     data-fields="ecode name"
-     data-fielddisps="コード 名称"></div>
-     <%= text_field_tag( 'post[title2]',"",
-     {:class => "dialoginput_g",
-     "data-field" => "name",
-     "data-group" => "3",
-     :readonly => :readonly}) %>
-
-
-
-  通常の使い方
+ 使い方
+1. /app/controllers/dialog_input_controller.rb をプロジェクトに追加: ajaxのサーバー側の処理をします
+2. /app/views/dialog_input/select.js.erb,selected.js.erb をプロジェクトに追加: ajaxのサーバー側(javascriptの部分の実行)
+3.レイアウトもしくはビューに以下を追加
+ //dialoginputを呼び出すようにする
+ <script >
  $(function() {
-    $('dialoginput_g').dialoginput('');　　　
+ $('.dialoginput_g').dialoginput('');           //dialoginputの呼び出し
  });
+ </script>
+
+ //dialoginput内で使うdiv をセット。
+ <div id="selected_dialog">
+ <div id="select_search"></div>
+ <div id="select_table"></div>
+ </div>
+
+4./app/assets/javascripts/dialog_input.jsをプロジェクトに追加　java scriptの処理　ダイアログ上でのjavascriptの処理をしています。
+5./config/locales/routes.rbに以下を追加
+ get "dialog_input/select"
+ get "dialog_input/selected"
+6.view内に設定ファイルの追加
+
+ <%= f.text_field :code,  :size => 4  ,
+ :class => "dialoginput dialoginput_g",  // 二つのクラスを追加
+ "data-field" => "code",                 //このテキストボックスに対応するフィールド名
+ "data-group" => "1",                    //グループID  同じグループは同じ文字列にする必要があります
+ "data-diid" => "11",                    //ユニークな文字列にする必要がある。ダイアログから戻った時のフォーカスの位置をセットする時に使っています
+ "data-id" => "dialoginput_1",          //検索に必要な情報が入っているid(#は入れません）
+ "data-dpath" => "../../"%>             //相対パスを設定
+ <span id="dialoginput_1"
+ data-sql="select name,phone,code from users  "     //ダイアログに表示する為のsql(最後には";"をつけない)
+ //全て文字としてselectする必要がある。idなどは数値なので
+ //trim(to_char(id,'99999')) as idなどとする
+ data-sqlwhere=""                                   //検索条件を手動で入れる場合
+ data-table="User"                                  //sqlのfromで使っているモデルクラス名　モデルを作っておく必要が有ります
+ data-idfield="code"                                //プライマリーキー。複合キーの場合はdata-sqlでこのキーがプリマリーキーになるように抽出している必要がある
+ data-fields="name phone code"                      //ダイアログ場に表示するフィールド（半角スペースで区切る）
+ data-fielddisps="name phone code"></span>          //data-fieldsに対応したタイトル文字（半角スペースで区切る）
+
+ 他の入力データを参照する場合　以下のように@@囲む。内部的にはdata-diidの中で@@で囲まれた文字列を探しに行って、その値をセットするようにしています。
+ "data-sql" => "select ecode,name from tmei where tcode = '@200@'"
+ <a
+ class="dialoginput_g"                              //クラス追加
+ data-field="name"                                  //フィールド名（ダイアログで選択した内容で、設定しているフィールド名の内容がここに表示されます）
+ data-group="1">                                    //グループID
+ <%= User.where(:code => @userlist.code).first.try("name") %>
+ </a>
+ <button
+ class="dialoginput dialoginput_g "               // 二つのクラスを追加
+ data-diid="11"                                   //このテキストボックスに対応するフィールド名
+ data-group="1"                                   //グループID  同じグループは同じ文字列にする必要があります
+ data-id="dialoginput_1"                          //検索に必要な情報が入っているid(#は入れません
+ data-dpath = "../../"                            //相対パスを設定
+ name="button"
+ type="button">検索
+ </button>
+
+ 注意
+ turbolinksが入っているどうもjQueryの動きが不安定になっているので、外す必要が有ります
  */
 
 
