@@ -10,7 +10,7 @@
 *起動して、user情報作成を選択して、作成または編集を選択して、検索ボタンを押すか、テキストボックス上でF3を押す
 
 --起動イメージ
-*screen_image.pngを参照してください
+*screen_image.pngを参照してください (https://github.com/KazuyaTanizawa/wakayamarb_dialog/blob/master/screen_image.png)
 
 
 
